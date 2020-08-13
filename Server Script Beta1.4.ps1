@@ -3,7 +3,7 @@
      param (
            [string]$Title = 'Server configuration Version Beta 1.4'
      )
-     cls
+     Clear-Host
      Write-Host "================ $Title ================"
     
      Write-Host "1: Press '1' Windows Server Configuration and Hostname.(may require an internet connection)"
@@ -17,16 +17,16 @@ $host.ui.RawUI.WindowTitle = “Server configuration Version Beta 1.4”
 do
 {
      Show-Menu
-     $input = Read-Host "Please make a selection"
-     switch ($input)
+     $input1 = Read-Host "Please make a selection"
+     switch ($input1)
      {
            '1' {
                 $host.ui.RawUI.WindowTitle = “Option #1 Windows Server Configuration and Hostname ”
-                cls
+                Clear-Host
                 'You chose option #1'
                 ## Windows settings
  # Update windows
- cls
+ Clear-Host
  write-host "If you want to install Windows Update Type Y or N (requires an internet connection)"
  Install-Module -Name PSWindowsUpdate -Force
  Install-WindowsUpdate -AcceptAll
@@ -62,7 +62,7 @@ wmic RecoverOS set AutoReboot = False
 
 # Change Hostname
 $host.ui.RawUI.WindowTitle = “Option #1 Hostname ”
-cls
+Clear-Host
 Write-host "Would you like to change the hostname of this computer? (Default is No)" -ForegroundColor Yellow 
     $Readhost = Read-Host " ( y / n ) " 
     Switch ($ReadHost) 
@@ -78,7 +78,7 @@ Write-host "Would you like to change the hostname of this computer? (Default is 
 
 ## Reboot computer
 $host.ui.RawUI.WindowTitle = “Option #1 Reboot Computer ”
-cls
+Clear-Host
 Write-host "Would you like to Restart this computer? (Default is No)" -ForegroundColor Yellow 
     $Readhost = Read-Host " ( y / n ) " 
     Switch ($ReadHost) 
@@ -89,7 +89,7 @@ Write-host "Would you like to Restart this computer? (Default is No)" -Foregroun
      }
            } '2' {
                 $host.ui.RawUI.WindowTitle = “Option #2 Windows Server Roles and features”
-                cls
+                Clear-Host
                 'You chose option #2'
                 #Install Windows Features (may require an internet connection)
                 #installing ADDS, DCHP, DFS, remote access, print-services, RSAT, Windows Server Backup
@@ -106,7 +106,7 @@ Write-host "Would you like to Restart this computer? (Default is No)" -Foregroun
 
            } '3' {
                 $host.ui.RawUI.WindowTitle = “Option #3 Restart Computer ”
-                cls
+                Clear-Host
                 'You chose option #3'
                 Write-host "Would you like to Restart this computer? (Default is No)" -ForegroundColor Yellow 
     $Readhost = Read-Host " ( y / n ) " 
@@ -118,20 +118,20 @@ Write-host "Would you like to Restart this computer? (Default is No)" -Foregroun
      }
            } '4' {
             $host.ui.RawUI.WindowTitle = “Option #4 Windows Powershell ”
-            cls
+            Clear-Host
                 'You chose option #4 Open Shell'
               powershell
            } '5' {
                 $host.ui.RawUI.WindowTitle = “Option #5 Installing Google Chrome ”
-                cls
+                Clear-Host
                 Write-Host 'You chose option #5'
                 Write-Host 'This action requires an internet connection'
                 Write-host 'trying to install Google Chrome....'
-               $LocalTempDir = $env:TEMP; $ChromeInstaller = "ChromeInstaller.exe"; (new-object    System.Net.WebClient).DownloadFile('http://dl.google.com/chrome/install/375.126/chrome_installer.exe', "$LocalTempDir\$ChromeInstaller"); & "$LocalTempDir\$ChromeInstaller" /silent /install; $Process2Monitor =  "ChromeInstaller"; Do { $ProcessesFound = Get-Process | ?{$Process2Monitor -contains $_.Name} | Select-Object -ExpandProperty Name; If ($ProcessesFound) { "Still running: $($ProcessesFound -join ', ')" | Write-Host; Start-Sleep -Seconds 2 } else { rm "$LocalTempDir\$ChromeInstaller" -ErrorAction SilentlyContinue -Verbose } } Until (!$ProcessesFound)
+               $LocalTempDir = $env:TEMP; $ChromeInstaller = "ChromeInstaller.exe"; (new-object    System.Net.WebClient).DownloadFile('http://dl.google.com/chrome/install/375.126/chrome_installer.exe', "$LocalTempDir\$ChromeInstaller"); & "$LocalTempDir\$ChromeInstaller" /silent /install; $Process2Monitor =  "ChromeInstaller"; Do { $ProcessesFound = Get-Process | Where-Object{$Process2Monitor -contains $_.Name} | Select-Object -ExpandProperty Name; If ($ProcessesFound) { "Still running: $($ProcessesFound -join ', ')" | Write-Host; Start-Sleep -Seconds 2 } else { Remove-Item "$LocalTempDir\$ChromeInstaller" -ErrorAction SilentlyContinue -Verbose } } Until (!$ProcessesFound)
            } 'q' {
                 return
            }
      }
      pause
 }
-until ($input -eq 'q')
+until ($input1 -eq 'q')
