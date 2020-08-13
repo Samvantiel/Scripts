@@ -1,6 +1,4 @@
-﻿test
-
-function Show-Menu
+﻿function Show-Menu
 {
      param (
            [string]$Title = 'Server configuration Version Beta 1.5'
