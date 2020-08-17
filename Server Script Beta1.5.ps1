@@ -1,4 +1,9 @@
-﻿function Show-Menu
+﻿#################################################################################################################
+########################################## Windows Server Interactive UI#########################################
+#################################################################################################################
+do { 
+
+function Show-Menu
 {
      param (
            [string]$Title = 'Server configuration Version Beta 1.5'
@@ -11,30 +16,35 @@
      Write-Host "3: Press '3' Restart the computer (1 minute countdown)."
      Write-Host "4: Press '4' Open Powershell session."
      Write-Host "5: Press '5' Install Google Chrome."
+     Write-host "Enter: Press 'Enter' to go back to the main menu"
      Write-Host "Q: Press 'Q' to quit."
+     $host.ui.RawUI.WindowTitle = “Server configuration Version Beta 1.5”
 }
-$host.ui.RawUI.WindowTitle = “Server configuration Version Beta 1.5”
+
 
 function Show-Menuoption {
      param (
           [string]$Title = 'Server configuration Version Beta 1.5'
      )
-     Write-Host "Menu 1 is for the basic installation of Windows, Roles and features, and google Chrome"
-     Write-Host "Menu 2 is for the configuration of the Roles and Features"
-     [string] $menuoption = Read-Host "Select a menu you want to use"
-
-     
+     Write-Host "[1] Menu 1 is for the basic installation of Windows, Roles and features, and google Chrome"
+     Write-Host "[2] Menu 2 is for the configuration of the Roles and Features"
+     Write-Host "[3] Menu 3 is for the maintenance for your machine"
+     Write-host "[Q] enter Q to Quit"
 }
-
+Clear-Host
 Show-Menuoption
-
-if ($menuoption = 1) {
+[string] $menuoption = Read-Host "Select a menu you want to use"
+Write-Host $menuoption
+#################################################################################################################
+###################################################### Menu 1 ###################################################
+#################################################################################################################
+if ($menuoption -eq '1') {
 
 do
 {
      Clear-Host
      Show-Menu
-     $input1 = Read-Host "Please make a selection"
+     $input1 = Read-Host "Please make a selection for menu 1"
      switch ($input1)
      {
            '1' {
@@ -57,8 +67,8 @@ $v = Get-WmiObject -Class Win32_Volume -Filter "DriveLetter='C:'"
 $v.IndexingEnabled = $false
 $v.Put()
 
-# show file extentions - restart explorer!
-function ShowFileExtensions()
+     # show file extentions - restart explorer!
+     function ShowFileExtensions()
 {
     # http://superuser.com/questions/666891/script-to-set-hide-file-extensions
     Push-Location
@@ -146,47 +156,125 @@ Write-host "Would you like to Restart this computer? (Default is No)" -Foregroun
                 Write-host 'trying to install Google Chrome....'
                $LocalTempDir = $env:TEMP; $ChromeInstaller = "ChromeInstaller.exe"; (new-object    System.Net.WebClient).DownloadFile('http://dl.google.com/chrome/install/375.126/chrome_installer.exe', "$LocalTempDir\$ChromeInstaller"); & "$LocalTempDir\$ChromeInstaller" /silent /install; $Process2Monitor =  "ChromeInstaller"; Do { $ProcessesFound = Get-Process | Where-Object{$Process2Monitor -contains $_.Name} | Select-Object -ExpandProperty Name; If ($ProcessesFound) { "Still running: $($ProcessesFound -join ', ')" | Write-Host; Start-Sleep -Seconds 2 } else { Remove-Item "$LocalTempDir\$ChromeInstaller" -ErrorAction SilentlyContinue -Verbose } } Until (!$ProcessesFound)
            } '6' { 
-                break
-
+               ###
           } 'q' {
                 return
            }
-     }
+     } 
      
 }
 while ($input1 -eq 'q') 
-} elseif ($menuoption = 2) {
+} 
 #################################################################################################################
 ###################################################### Menu 2 ###################################################
 #################################################################################################################
-
-function Show-Menu2
-{
-     param (
-           [string]$Title = 'Server Roles Configuration Version Beta 1.0'
-     )
-     Clear-Host
-     Write-Host "================ $Title ================"
-    
-     Write-Host "1: Press '1' ding)"
-     Write-Host "2: Press '2' Windows Server Roles and features. (may require an internet connection)"
-     Write-Host "3: Press '3' Restart the computer (1 minute countdown)."
-     Write-Host "4: Press '4' Open Powershell session."
-     Write-Host "5: Press '5' Install Google Chrome."
-     Write-Host "Q: Press 'Q' to quit."
+elseif 
+     ($menuoption -eq '2') {
+          function Show-Menu2
+          {
+               param (
+                     [string]$Title = 'Server Roles Configuration Version Beta 1.0'
+               )
+               Clear-Host
+               Write-Host "================ $Title ================"
+              
+               Write-Host "1: Press '1' ding"
+               Write-Host "2: Press '2' dong"
+               Write-Host "3: Press '3' "
+               Write-Host "4: Press '4' "
+               Write-Host "5: Press '5' "
+               Write-host "Enter: Press 'Enter' to go back to the main menu"
+               Write-Host "Q: Press 'Q' to quit."
+               $host.ui.RawUI.WindowTitle = “Server Roles Configuration Version Beta 1.2”
+          }
+          
+          
+          
+          do 
+          {
+               #Clear-Host
+               Show-Menu2
+               $input2 = Read-Host "Please make a selection for menu 2"
+               switch ($input2)
+               {
+                     '1' {
+                    write-host 'test1'
+                    read-host "Naam?"
+                    pause
+                     } '2' {
+                    write-host 'test2'
+                    ping 8.8.8.8
+                     } '3' {
+                    
+                     } '4' {
+                    
+                     } '5' {
+                    
+                     } '6' { 
+                    
+                    } 'q' {
+                          return
+                     }
+               } 
+          }
+          while ($input2 -eq 'q') 
+}
+#################################################################################################################
+###################################################### Menu 3 ###################################################
+#################################################################################################################
+elseif 
+     ($menuoption -eq '3') {
+          function Show-Menu3
+          {
+               param (
+                     [string]$Title = 'Server Roles Configuration Version Beta 1.0'
+               )
+               Clear-Host
+               Write-Host "================ $Title ================"
+              
+               Write-Host "1: Press '1' harry"
+               Write-Host "2: Press '2' potter"
+               Write-Host "3: Press '3' "
+               Write-Host "4: Press '4' "
+               Write-Host "5: Press '5' "
+               Write-host "Enter: Press 'Enter' to go back to the main menu"
+               Write-Host "Q: Press 'Q' to quit."
+               $host.ui.RawUI.WindowTitle = “Server maintenance Version Beta 1.1”
+          }
+          
+          
+          
+          do 
+          {
+               #Clear-Host
+               Show-Menu3
+               $input3 = Read-Host "Please make a selection for menu 3"
+               switch ($input3)
+               {
+                     '1' {
+                    write-host 'ron wemel'
+                    read-host "Naam?"
+                    pause
+                     } '2' {
+                    write-host 'test2'
+                    ping 8.8.4.4
+                     } '3' {
+                    
+                     } '4' {
+                    
+                     } '5' {
+                    
+                     } '6' { 
+                    
+                    } 'q' {
+                          return
+                     }
+               } 
+          }
+          while ($input3 -eq 'q') 
 }
 
-do {
-    Clear-Host
-     Show-Menu2
 
-    $input2 = Read-Host "Please select an option"
-    switch ($input2) 
-    {
-        condition {  }
-        Default {}
-    }
-    break
-} until ($input2 -eq 'q')
+    # [string] $terminate = read-host "if you want to exit enter Q"
+} until ($menuoption -eq 'q')
 
-}
