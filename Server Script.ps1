@@ -67,7 +67,7 @@ $v = Get-WmiObject -Class Win32_Volume -Filter "DriveLetter='C:'"
 $v.IndexingEnabled = $false
 $v.Put()
 
-     # show file extentions - restart explorer!
+     # show file extensions - restart explorer!
      Function ShowFileExtensions()
 {
     # http://superuser.com/questions/666891/script-to-set-hide-file-extensions
@@ -204,7 +204,7 @@ ElseIf
                       $Readhost = Read-Host " ( y / n ) " 
                       Switch ($Readhost) {
                            Y { 
-                              $addsdomainname = Read-Host "Enter the name of your domainname (With extention)"
+                              $addsdomainname = Read-Host "Enter the name of your domainname (With extension)"
                               $addsadminpassword = Read-Host "Enter your new domainAdminPassword"
                               Install-ADDSForest -domainName $addsdomainname -Confirm -CreateDnsDelegation -InstallDns -SafeModeAdministratorPassword $addsadminpassword }
                            N { Write-Host "No, computer will not shutdown"; break }
@@ -265,8 +265,8 @@ ElseIf
                Switch ($input3)
                {
                      '1' {
-                    Write-Host 'ron wemel'
-                    Read-Host "Naam?"
+                    Write-Host 'test'
+                    Read-Host "test"
                     Pause
                      } '2' {
                     Write-Host 'test2'
