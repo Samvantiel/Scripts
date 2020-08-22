@@ -204,15 +204,20 @@ ElseIf
                       $Readhost = Read-Host " ( y / n ) " 
                       Switch ($Readhost) {
                            Y { 
+                                Write-Host "Make sure you do not have a restart pending before setting this up!" -ForegroundColor Red
                               $addsdomainname = Read-Host "Enter the name of your domainname (With extension)"
-                              $addsadminpassword = Read-Host "Enter your new domainAdminPassword"
-                              Install-ADDSForest -domainName $addsdomainname -Confirm -CreateDnsDelegation -InstallDns -SafeModeAdministratorPassword $addsadminpassword }
+                             # $addsadminpassword = Read-Host "Enter your new domainAdminPassword"
+
+                              #Declare variables
+                             # $addsadminpassword = (ConvertTo-SecureString -String "Pass1w0rd" -AsPlainText -Force) -SafeModeAdministratorPassword $addsadminpassword
+                              Install-ADDSForest -CreateDnsDelegation:$false -DomainName $addsdomainname -InstallDns:$true -NoRebootOnCompletion:$false -Force:$true }
                            N { Write-Host "No, computer will not shutdown"; break }
                            Default { Write-Host "No, computer will not shutdown"; break }
 
 
                       }
                 Pause
+                Clear-Host
 
                      } '2' {
                     Write-Host 'test2'
