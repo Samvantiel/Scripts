@@ -3,9 +3,9 @@
 #################################################################################################################
 do { 
 
-function Show-Menu
+Function Show-Menu
 {
-     param (
+     Param (
            [string]$Title = 'Server configuration Version Beta 1.5'
      )
      Clear-Host
@@ -16,20 +16,20 @@ function Show-Menu
      Write-Host "3: Press '3' Restart the computer (1 minute countdown)."
      Write-Host "4: Press '4' Open Powershell session."
      Write-Host "5: Press '5' Install Google Chrome."
-     Write-host "Enter: Press 'Enter' to go back to the main menu"
+     Write-Host "Enter: Press 'Enter' to go back to the main menu"
      Write-Host "Q: Press 'Q' to quit."
      $host.ui.RawUI.WindowTitle = “Server configuration Version Beta 1.5”
 }
 
 
-function Show-Menuoption {
-     param (
+Function Show-Menuoption {
+     Param (
           [string]$Title = 'Server configuration Version Beta 1.5'
      )
      Write-Host "[1] Menu 1 is for the basic installation of Windows, Roles and features, and google Chrome"
      Write-Host "[2] Menu 2 is for the configuration of the Roles and Features"
      Write-Host "[3] Menu 3 is for the maintenance for your machine"
-     Write-host "[Q] enter Q to Quit"
+     Write-Host "[Q] enter Q to Quit"
 }
 Clear-Host
 Show-Menuoption
@@ -45,7 +45,7 @@ do
      Clear-Host
      Show-Menu
      $input1 = Read-Host "Please make a selection for menu 1"
-     switch ($input1)
+     Switch ($input1)
      {
            '1' {
                 $host.ui.RawUI.WindowTitle = “Option #1 Windows Server Configuration and Hostname ”
@@ -54,7 +54,7 @@ do
                 ## Windows settings
  # Update windows
  Clear-Host
- write-host "If you want to install Windows Update Type Y or N (requires an internet connection)"
+ Write-Host "If you want to install Windows Update Type Y or N (requires an internet connection)"
  Install-Module -Name PSWindowsUpdate -Force
  Install-WindowsUpdate -AcceptAll
 
@@ -68,7 +68,7 @@ $v.IndexingEnabled = $false
 $v.Put()
 
      # show file extentions - restart explorer!
-     function ShowFileExtensions()
+     Function ShowFileExtensions()
 {
     # http://superuser.com/questions/666891/script-to-set-hide-file-extensions
     Push-Location
@@ -90,27 +90,27 @@ wmic RecoverOS set AutoReboot = False
 # Change Hostname
 $host.ui.RawUI.WindowTitle = “Option #1 Hostname ”
 Clear-Host
-Write-host "Would you like to change the hostname of this computer? (Default is No)" -ForegroundColor Yellow 
+Write-Host "Would you like to change the hostname of this computer? (Default is No)" -ForegroundColor Yellow 
     $Readhost = Read-Host " ( y / n ) " 
     Switch ($ReadHost) 
      { 
-       Y {Write-host "Yes, What should this computer be called?"; ($hostname1 = read-host) } 
+       Y {Write-Host "Yes, What should this computer be called?"; ($hostname1 = Read-Host) } 
        N {Write-Host "No, continue program"; break} 
        Default {Write-Host "Default, continue program"; break} 
      }
      if ($hostname1 -eq $null::ok){
-     }else { Rename-Computer -NewName $hostname1 -Verbose
-     pause
+     }Else { Rename-Computer -NewName $hostname1 -Verbose
+     Pause
      }
 
 ## Reboot computer
 $host.ui.RawUI.WindowTitle = “Option #1 Reboot Computer ”
 Clear-Host
-Write-host "Would you like to Restart this computer? (Default is No)" -ForegroundColor Yellow 
+Write-Host "Would you like to Restart this computer? (Default is No)" -ForegroundColor Yellow 
     $Readhost = Read-Host " ( y / n ) " 
     Switch ($ReadHost) 
      { 
-       Y {Write-host "Yes, Computer will restart in 1 minute!"; (shutdown -r -t 60) }
+       Y {Write-Host "Yes, Computer will restart in 1 minute!"; (shutdown -r -t 60) }
        N {Write-Host "No, computer will not shutdown"; break} 
        Default {Write-Host "Default, computer will not shutdown. it is recommended to restart your computer soon!" -ForegroundColor Red; break} 
      }
@@ -121,7 +121,7 @@ Write-host "Would you like to Restart this computer? (Default is No)" -Foregroun
                 #Install Windows Features (may require an internet connection)
                 #installing ADDS, DCHP, DFS, remote access, print-services, RSAT, Windows Server Backup
                 
-                Install-WindowsFeature AD-Domain-Services -IncludeManagementTools -IncludeAllSubFeature
+                Install-WindowsFeature AD-domain-Services -IncludeManagementTools -IncludeAllSubFeature
                 Install-WindowsFeature dhcp -IncludeAllSubFeature -IncludeManagementTools
                 Install-WindowsFeature FS-DFS-Namespace -IncludeAllSubFeature -IncludeManagementTools
                 Install-WindowsFeature FS-DFS-Replication -IncludeAllSubFeature -IncludeManagementTools
@@ -135,11 +135,11 @@ Write-host "Would you like to Restart this computer? (Default is No)" -Foregroun
                 $host.ui.RawUI.WindowTitle = “Option #3 Restart Computer ”
                 Clear-Host
                 'You chose option #3'
-                Write-host "Would you like to Restart this computer? (Default is No)" -ForegroundColor Yellow 
+                Write-Host "Would you like to Restart this computer? (Default is No)" -ForegroundColor Yellow 
     $Readhost = Read-Host " ( y / n ) " 
     Switch ($ReadHost) 
      { 
-       Y {Write-host "Yes, Computer will restart in 1 minute!"; (shutdown -r -t 60) }
+       Y {Write-Host "Yes, Computer will restart in 1 minute!"; (shutdown -r -t 60) }
        N {Write-Host "No, computer will not shutdown"; break} 
        Default {Write-Host "Default, computer will not shutdown. it is recommended to restart your computer soon!" -ForegroundColor Red; break} 
      }
@@ -153,8 +153,8 @@ Write-host "Would you like to Restart this computer? (Default is No)" -Foregroun
                 Clear-Host
                 Write-Host 'You chose option #5'
                 Write-Host 'This action requires an internet connection'
-                Write-host 'trying to install Google Chrome....'
-               $LocalTempDir = $env:TEMP; $ChromeInstaller = "ChromeInstaller.exe"; (new-object    System.Net.WebClient).DownloadFile('http://dl.google.com/chrome/install/375.126/chrome_installer.exe', "$LocalTempDir\$ChromeInstaller"); & "$LocalTempDir\$ChromeInstaller" /silent /install; $Process2Monitor =  "ChromeInstaller"; Do { $ProcessesFound = Get-Process | Where-Object{$Process2Monitor -contains $_.Name} | Select-Object -ExpandProperty Name; If ($ProcessesFound) { "Still running: $($ProcessesFound -join ', ')" | Write-Host; Start-Sleep -Seconds 2 } else { Remove-Item "$LocalTempDir\$ChromeInstaller" -ErrorAction SilentlyContinue -Verbose } } Until (!$ProcessesFound)
+                Write-Host 'trying to install Google Chrome....'
+               $LocalTempDir = $env:TEMP; $ChromeInstaller = "ChromeInstaller.exe"; (new-object    System.Net.WebClient).downloadFile('http://dl.google.com/chrome/install/375.126/chrome_installer.exe', "$LocalTempDir\$ChromeInstaller"); & "$LocalTempDir\$ChromeInstaller" /silent /install; $Process2Monitor =  "ChromeInstaller"; do { $ProcessesFound = Get-Process | Where-Object{$Process2Monitor -contains $_.Name} | Select-Object -ExpandProperty Name; If ($ProcessesFound) { "Still running: $($ProcessesFound -join ', ')" | Write-Host; Start-Sleep -Seconds 2 } Else { Remove-Item "$LocalTempDir\$ChromeInstaller" -ErrorAction SilentlyContinue -Verbose } } Until (!$ProcessesFound)
            } '6' { 
                ###
           } 'q' {
@@ -163,29 +163,29 @@ Write-host "Would you like to Restart this computer? (Default is No)" -Foregroun
      } 
      
 }
-while ($input1 -eq 'q') 
+While ($input1 -eq 'q') 
 } 
 #################################################################################################################
 ###################################################### Menu 2 ###################################################
 #################################################################################################################
-elseif 
+ElseIf 
      ($menuoption -eq '2') {
-          function Show-Menu2
+          Function Show-Menu2
           {
-               param (
+               Param (
                      [string]$Title = 'Server Roles Configuration Version Beta 1.0'
                )
                Clear-Host
                Write-Host "================ $Title ================"
               
-               Write-Host "1: Press '1' ding"
-               Write-Host "2: Press '2' dong"
+               Write-Host "1: Press '1' Installation of a new Active Directory Domain Forest"
+               Write-Host "2: Press '2' "
                Write-Host "3: Press '3' "
                Write-Host "4: Press '4' "
                Write-Host "5: Press '5' "
-               Write-host "Enter: Press 'Enter' to go back to the main menu"
+               Write-Host "Enter: Press 'Enter' to go back to the main menu"
                Write-Host "Q: Press 'Q' to quit."
-               $host.ui.RawUI.WindowTitle = “Server Roles Configuration Version Beta 1.2”
+               $host.ui.RawUI.WindowTitle = “Server Roles Configuration Version Beta 1.3”
           }
           
           
@@ -195,14 +195,27 @@ elseif
                #Clear-Host
                Show-Menu2
                $input2 = Read-Host "Please make a selection for menu 2"
-               switch ($input2)
+               Switch ($input2)
                {
                      '1' {
-                    write-host 'test1'
-                    read-host "Naam?"
-                    pause
+                      Clear-Host
+                      Write-Host 'You selected New Active Directory domain Forest'
+                      Write-Host "do you really want to make a new forest? (Default is No)" -ForegroundColor Yellow 
+                      $Readhost = Read-Host " ( y / n ) " 
+                      Switch ($Readhost) {
+                           Y { 
+                              $addsdomainname = Read-Host "Enter the name of your domainname (With extention)"
+                              $addsadminpassword = Read-Host "Enter your new domainAdminPassword"
+                              Install-ADDSForest -domainName $addsdomainname -Confirm -CreateDnsDelegation -InstallDns -SafeModeAdministratorPassword $addsadminpassword }
+                           N { Write-Host "No, computer will not shutdown"; break }
+                           Default { Write-Host "No, computer will not shutdown"; break }
+
+
+                      }
+                Pause
+
                      } '2' {
-                    write-host 'test2'
+                    Write-Host 'test2'
                     ping 8.8.8.8
                      } '3' {
                     
@@ -217,16 +230,16 @@ elseif
                      }
                } 
           }
-          while ($input2 -eq 'q') 
+          While ($input2 -eq 'q') 
 }
 #################################################################################################################
 ###################################################### Menu 3 ###################################################
 #################################################################################################################
-elseif 
+ElseIf 
      ($menuoption -eq '3') {
-          function Show-Menu3
+          Function Show-Menu3
           {
-               param (
+               Param (
                      [string]$Title = 'Server Roles Configuration Version Beta 1.0'
                )
                Clear-Host
@@ -237,7 +250,7 @@ elseif
                Write-Host "3: Press '3' "
                Write-Host "4: Press '4' "
                Write-Host "5: Press '5' "
-               Write-host "Enter: Press 'Enter' to go back to the main menu"
+               Write-Host "Enter: Press 'Enter' to go back to the main menu"
                Write-Host "Q: Press 'Q' to quit."
                $host.ui.RawUI.WindowTitle = “Server maintenance Version Beta 1.1”
           }
@@ -249,14 +262,14 @@ elseif
                #Clear-Host
                Show-Menu3
                $input3 = Read-Host "Please make a selection for menu 3"
-               switch ($input3)
+               Switch ($input3)
                {
                      '1' {
-                    write-host 'ron wemel'
-                    read-host "Naam?"
-                    pause
+                    Write-Host 'ron wemel'
+                    Read-Host "Naam?"
+                    Pause
                      } '2' {
-                    write-host 'test2'
+                    Write-Host 'test2'
                     ping 8.8.4.4
                      } '3' {
                     
@@ -271,10 +284,10 @@ elseif
                      }
                } 
           }
-          while ($input3 -eq 'q') 
+          While ($input3 -eq 'q') 
 }
 
 
-    # [string] $terminate = read-host "if you want to exit enter Q"
-} until ($menuoption -eq 'q')
+    # [string] $terminate = Read-Host "if you want to exit enter Q"
+} Until ($menuoption -eq 'q')
 
