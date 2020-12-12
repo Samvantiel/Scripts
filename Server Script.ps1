@@ -6,7 +6,7 @@ do {
 Function Show-Menu
 {
      Param (
-           [string]$Title = 'Server configuration Version Beta 1.5'
+           [string]$Title = 'Server configuration'
      )
      Clear-Host
      Write-Host "================ $Title ================"
@@ -16,19 +16,20 @@ Function Show-Menu
      Write-Host "3: Press '3' Restart the computer (1 minute countdown)."
      Write-Host "4: Press '4' Open Powershell session."
      Write-Host "5: Press '5' Install Google Chrome."
+     Write-Host "6: Press '6' To change the modern windows wallpaper(try again if not registered)"
      Write-Host "Enter: Press 'Enter' to go back to the main menu"
      Write-Host "Q: Press 'Q' to quit."
-     $host.ui.RawUI.WindowTitle = “Server configuration Version Beta 1.5”
+     $host.ui.RawUI.WindowTitle = “$Title”
 }
 
 
 Function Show-Menuoption {
      Param (
-          [string]$Title = 'Server configuration Version Beta 1.5'
+          [string]$Title = 'Server configuration Version'
      )
      Write-Host "[1] Menu 1 is for the basic installation of Windows, Roles and features, and google Chrome"
      Write-Host "[2] Menu 2 is for the configuration of the Roles and Features"
-     Write-Host "[3] Menu 3 is for the maintenance for your machine"
+     Write-Host "[3] Menu 3 is for the maintenance and settings for your machine"
      Write-Host "[Q] enter Q to Quit"
 }
 Clear-Host
@@ -156,7 +157,38 @@ Write-Host "Would you like to Restart this computer? (Default is No)" -Foregroun
                 Write-Host 'trying to install Google Chrome....'
                $LocalTempDir = $env:TEMP; $ChromeInstaller = "ChromeInstaller.exe"; (new-object    System.Net.WebClient).downloadFile('http://dl.google.com/chrome/install/375.126/chrome_installer.exe', "$LocalTempDir\$ChromeInstaller"); & "$LocalTempDir\$ChromeInstaller" /silent /install; $Process2Monitor =  "ChromeInstaller"; do { $ProcessesFound = Get-Process | Where-Object{$Process2Monitor -contains $_.Name} | Select-Object -ExpandProperty Name; If ($ProcessesFound) { "Still running: $($ProcessesFound -join ', ')" | Write-Host; Start-Sleep -Seconds 2 } Else { Remove-Item "$LocalTempDir\$ChromeInstaller" -ErrorAction SilentlyContinue -Verbose } } Until (!$ProcessesFound)
            } '6' { 
-               ###
+               $Url = "https://michaelgillettonlinecontent.azurewebsites.net/umbraco/api/wallpapersdata/download?id=1534&downloadUrl=https://cdn.wallpaperhub.app/cloudcache/7/c/2/f/3/4/7c2f345bdfcadb8a3faf483ebaa2e9aea712bbdb.jpg"
+               if (-not (Test-Path -LiteralPath C:\temp)) {
+                   
+                   try {
+                       New-Item -Path C:\temp -ItemType Directory -ErrorAction Stop | Out-Null #-Force
+                   }
+                   catch {
+                       Write-Error -Message "Unable to create directory '$DirectoryToCreate'. Error was: $_" -ErrorAction Stop
+                   }
+                   "Successfully created directory '$DirectoryToCreate'."
+               
+               }
+               else {
+                   "Directory already existed"
+               }
+                Invoke-WebRequest -Uri $Url -OutFile c:\temp\wallpaper.jpg
+               Function Set-WallPaper($Value)
+               {
+               
+                Set-ItemProperty -path 'HKCU:\Control Panel\Desktop\' -name wallpaper -value $value
+               
+                rundll32.exe user32.dll, UpdatePerUserSystemParameters 1, True
+               
+               }
+               Stop-Process -processName: Explorer -force
+               Set-WallPaper -value "C:\temp\wallpaper.jpg" 
+               Set-WallPaper -value "C:\temp\wallpaper.jpg"
+               Stop-Process -processName: Explorer -force
+               explorer.exe
+
+           } '7' {
+               ### 
           } 'q' {
                 return
            }
@@ -173,19 +205,19 @@ ElseIf
           Function Show-Menu2
           {
                Param (
-                     [string]$Title = 'Server Roles Configuration Version Beta 1.0'
+                     [string]$Title = 'Server Roles Configuration'
                )
                Clear-Host
                Write-Host "================ $Title ================"
               
                Write-Host "1: Press '1' Installation of a new Active Directory Domain Forest"
-               Write-Host "2: Press '2' "
+               Write-Host "2: Press '2' Confuguration of DHCP"
                Write-Host "3: Press '3' "
                Write-Host "4: Press '4' "
                Write-Host "5: Press '5' "
                Write-Host "Enter: Press 'Enter' to go back to the main menu"
                Write-Host "Q: Press 'Q' to quit."
-               $host.ui.RawUI.WindowTitle = “Server Roles Configuration Version Beta 1.3”
+               $host.ui.RawUI.WindowTitle = “$Title”
           }
           
           
@@ -220,8 +252,21 @@ ElseIf
                 Clear-Host
 
                      } '2' {
-                    Write-Host 'test2'
-                    ping 8.8.8.8
+                         # Get IP Range
+                         $DHCPstart = Read-Host "Start range IP for the scope: "
+                         $DHCPEND = Read-Host "End range IP for the scope: "
+                         $DHCPSubnetmask = Read-Host "Subnetmask for the Scope"
+                         Add-DhcpServerV4Scope -Name "DHCP Scope" -StartRange $DHCPstart -EndRange $DHCPEND -SubnetMask $DHCPSubnetmask
+                         
+                         # Get DNS config
+                         $DHCPDNS1 = Read-Host "DNS Server 1: " 
+                         $DHCPDNS2 = Read-Host "DNS Server 2: "
+                         $DHCPRouter = Read-Host "Gateway IP address :"
+                         Set-DhcpServerV4OptionValue -DnsServer $DHCPDNS1,$DHCPDNS2 -Router $DHCPRouter
+                         
+                         # Restart DHCP Service
+                         Restart-service dhcpserver
+                    
                      } '3' {
                     
                      } '4' {
@@ -245,19 +290,19 @@ ElseIf
           Function Show-Menu3
           {
                Param (
-                     [string]$Title = 'Server Roles Configuration Version Beta 1.0'
+                     [string]$Title = 'Server maintenance and settings'
                )
                Clear-Host
                Write-Host "================ $Title ================"
               
-               Write-Host "1: Press '1' harry"
-               Write-Host "2: Press '2' potter"
+               Write-Host "1: Press '1' Turn Services on/off"
+               Write-Host "2: Press '2' "
                Write-Host "3: Press '3' "
                Write-Host "4: Press '4' "
                Write-Host "5: Press '5' "
                Write-Host "Enter: Press 'Enter' to go back to the main menu"
                Write-Host "Q: Press 'Q' to quit."
-               $host.ui.RawUI.WindowTitle = “Server maintenance Version Beta 1.1”
+               $host.ui.RawUI.WindowTitle = “$Title”
           }
           
           
@@ -270,9 +315,12 @@ ElseIf
                Switch ($input3)
                {
                      '1' {
-                    Write-Host 'test'
-                    Read-Host "test"
-                    Pause
+                    Clear-Host
+                    Write-Host 'Turning services on/off'
+
+                    get-service -name DHCPServer, dfs, DFSR, Audiosrv, AudioEndpointBuilder
+
+                    
                      } '2' {
                     Write-Host 'test2'
                     ping 8.8.4.4

@@ -22,6 +22,10 @@ Function Show-Menu
 }
 
 
+#
+#
+#
+[void]$Server_Setup.ShowDialog()
 Function Show-Menuoption {
      Param (
           [string]$Title = 'Server configuration Version Beta 1.5'
@@ -164,6 +168,84 @@ Write-Host "Would you like to Restart this computer? (Default is No)" -Foregroun
      
 }
 While ($input1 -eq 'q') 
+<# This form was created using POSHGUI.com  a free online gui designer for PowerShell
+.NAME
+    Server Script_GUI
+#>
+
+Add-Type -AssemblyName System.Windows.Forms
+[System.Windows.Forms.Application]::EnableVisualStyles()
+
+$Server_Setup                    = New-Object system.Windows.Forms.Form
+$Server_Setup.ClientSize         = New-Object System.Drawing.Point(551,250)
+$Server_Setup.text               = "Server Setup and maintenance "
+$Server_Setup.TopMost            = $false
+
+$Menu_1                          = New-Object system.Windows.Forms.Button
+$Menu_1.text                     = "Menu 1"
+$Menu_1.width                    = 70
+$Menu_1.height                   = 30
+$Menu_1.location                 = New-Object System.Drawing.Point(20,24)
+$Menu_1.Font                     = New-Object System.Drawing.Font('Microsoft Sans Serif',10)
+
+$Button2                         = New-Object system.Windows.Forms.Button
+$Button2.text                    = "button 2"
+$Button2.width                   = 70
+$Button2.height                  = 30
+$Button2.location                = New-Object System.Drawing.Point(20,101)
+$Button2.Font                    = New-Object System.Drawing.Font('Microsoft Sans Serif',10)
+
+$Button3                         = New-Object system.Windows.Forms.Button
+$Button3.text                    = "button 3"
+$Button3.width                   = 70
+$Button3.height                  = 30
+$Button3.location                = New-Object System.Drawing.Point(21,173)
+$Button3.Font                    = New-Object System.Drawing.Font('Microsoft Sans Serif',10)
+
+$Lab1Text                        = New-Object system.Windows.Forms.Label
+$Lab1Text.text                   = "Menu 1 is for the basic installation of Windows, Roles and features, and google Chrome"
+$Lab1Text.AutoSize               = $true
+$Lab1Text.width                  = 25
+$Lab1Text.height                 = 10
+$Lab1Text.location               = New-Object System.Drawing.Point(26,67)
+$Lab1Text.Font                   = New-Object System.Drawing.Font('Microsoft Sans Serif',10)
+
+$Lab2text                        = New-Object system.Windows.Forms.Label
+$Lab2text.text                   = "Menu 2 is for the configuration of the Roles and Features"
+$Lab2text.AutoSize               = $true
+$Lab2text.width                  = 25
+$Lab2text.height                 = 10
+$Lab2text.location               = New-Object System.Drawing.Point(26,141)
+$Lab2text.Font                   = New-Object System.Drawing.Font('Microsoft Sans Serif',10)
+
+$Lab3text                        = New-Object system.Windows.Forms.Label
+$Lab3text.text                   = "Menu 3 is for the maintenance for your machine"
+$Lab3text.AutoSize               = $true
+$Lab3text.width                  = 25
+$Lab3text.height                 = 10
+$Lab3text.location               = New-Object System.Drawing.Point(26,215)
+$Lab3text.Font                   = New-Object System.Drawing.Font('Microsoft Sans Serif',10)
+
+$ToolTip1                        = New-Object system.Windows.Forms.ToolTip
+
+$ErrorProvider1                  = New-Object system.Windows.Forms.ErrorProvider
+
+$ErrorProvider2                  = New-Object system.Windows.Forms.ErrorProvider
+
+$Main_Box_Quit                   = New-Object system.Windows.Forms.Button
+$Main_Box_Quit.text              = "Quit"
+$Main_Box_Quit.width             = 60
+$Main_Box_Quit.height            = 30
+$Main_Box_Quit.location          = New-Object System.Drawing.Point(464,192)
+$Main_Box_Quit.Font              = New-Object System.Drawing.Font('Microsoft Sans Serif',10)
+
+$Server_Setup.controls.AddRange(@($Menu_1,$Button2,$Button3,$Lab1Text,$Lab2text,$Lab3text,$Main_Box_Quit))
+
+$Menu_1.Add_Click({  })
+$Main_Box_Quit.Add_Click({ $menuoption -eq '1' })
+
+
+[void]$Server_Setup.ShowDialog()
 } 
 #################################################################################################################
 ###################################################### Menu 2 ###################################################
